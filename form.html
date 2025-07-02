@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> <title>Muhammad Umer Haroon</title>
+</head>
+<body>
+    <form id="registrationForm">
+       
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <span class="error" id="usernameError"></span>
+        </div>
+
+      
+        <div class="form-group radio-group">
+            <label>Gender:</label>
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
+       
+            <span class="error" id="genderError"></span>
+        </div>
+
+      
+        <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required>
+            <span class="error" id="dobError"></span>
+        </div>
+
+     
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+            <span class="error" id="emailError"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <span class="error" id="passwordError"></span>
+        </div>
+
+       
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" required>
+            <span class="error" id="confirmPasswordError"></span>
+        </div>
+
+       
+        <div class="form-group checkbox-group">
+            <label>
+                <input type="checkbox" id="terms"> I agree to the terms and conditions
+            </label>
+            <span class="error" id="termsError"></span>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+    
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        
+        // Validation functions
+        const validateUsername = () => {
+            const username = document.getElementById('username');
+            const error = document.getElementById('usernameError');
+            if (username.value.trim() === '') {				// trim gets rid of whte spaces at start ad end of string
+                showError(username, error, 'Username is required');
+                return false;
+            }
+            showSuccess(username, error);
+            return true;
+        };
+
+        const validateGender = () => {
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const error = document.getElementById('genderError');
+            if (!gender) {
+                showError(null, error, 'Please select a gender');
+                return false;
+            }
+            showSuccess(null, error);
+            return true;
+        };
+
+        const validateDOB = () => {
+            const dob = document.getElementById('dob');
+            const error = document.getElementById('dobError');
+            const selectedDate = new Date(dob.value);
+            const currentDate = new Date();
+            
+            if (!dob.value) {
+                showError(dob, error, 'Date of Birth is required');
+                return false;
+            }
+            if (selectedDate > currentDate) {
+                showError(dob, error, 'Date cannot be in the future');
+                return false;
+            }
+            showSuccess(dob, error);
+            return true;
+        };
+
+        const validateEmail = () => {
+            const email = document.getElementById('email');
+            const error = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email.value)) {
+                showError(email, error, 'Please enter a valid email address');
+                return false;
+            }
+            showSuccess(email, error);
+            return true;
+        };
+
+        const validatePassword = () => {
+            const password = document.getElementById('password');
+            const error = document.getElementById('passwordError');
+            const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{5,}$/;
+
+/*
+
+const password = 'document.getElementById('password');
+
+// Check for uppercase letter
+const hasUppercase = /[A-Z]/.test(password);
+// Check for digit
+const hasDigit = /\d/.test(password);
+// Check for length
+const isValidLength = password.length >= 5;
+
+if (hasUppercase && hasDigit && isValidLength) {
+     showSuccess(password, error);
+} else {
+    showError(password, error,'Password must be at least 5 characters with one uppercase letter and one number');
+
+}
+
+
+*/
+
+
+            
+            if (!passwordRegex.test(password.value)) {
+                showError(password, error, 
+                    'Password must be at least 5 characters with one uppercase letter and one number');
+                return false;
+            }
+            showSuccess(password, error);
+            return true;
+        };
+
+        const validateConfirmPassword = () => {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const error = document.getElementById('confirmPasswordError');
+            
+            if (password.value !== confirmPassword.value) {
+                showError(confirmPassword, error, 'Passwords do not match');
+                return false;
+            }
+            showSuccess(confirmPassword, error);
+            return true;
+        };
+
+        const validateTerms = () => {
+            const terms = document.getElementById('terms');
+            const error = document.getElementById('termsError');
+            
+            if (!terms.checked) {
+                showError(terms, error, 'You must agree to the terms');
+                return false;
+            }
+            showSuccess(terms, error);
+            return true;
+        };
+
+        // Helper functions
+        const showError = (input, errorElement, message) => {
+            if (input) {
+                input.classList.add('invalid');
+                input.classList.remove('valid');
+            }
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        };
+
+        const showSuccess = (input, errorElement) => {
+            if (input) {
+                input.classList.add('valid');
+                input.classList.remove('invalid');
+            }
+            errorElement.style.display = 'none';
+        };
+
+        // Event listeners
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const isValid = [
+                validateUsername(),
+                validateGender(),
+                validateDOB(),
+                validateEmail(),
+                validatePassword(),
+                validateConfirmPassword(),
+                validateTerms()
+            ].every(result => result === true);
+
+            if (isValid) {
+                // Submit the form (you can add AJAX call here)
+                alert('Form submitted successfully!'+isValid);
+                form.reset();
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('username').addEventListener('input', validateUsername);
+        document.getElementById('dob').addEventListener('change', validateDOB);
+        document.getElementById('email').addEventListener('input', validateEmail);
+        document.getElementById('password').addEventListener('input', validatePassword);
+        document.getElementById('confirmPassword').addEventListener('input', validateConfirmPassword);
+        document.getElementById('terms').addEventListener('change', validateTerms);
+        document.querySelectorAll('input[name="gender"]').forEach(radio => {
+            radio.addEventListener('change', validateGender);
+        });
+    </script>
+</body>
+</html>

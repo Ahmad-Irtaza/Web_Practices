@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Typing Speed Tester</title>
+<style>
+    body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0f172a;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #4f46e5;
+}
+
+.quote-box {
+  background-color: #334155;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  font-size: 18px;
+  min-height: 60px;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+}
+
+.result {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #4338ca;
+}
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Typing Speed Tester</h1>
+    <div class="quote-box" id="quoteDisplay"></div>
+
+    <textarea id="typedInput" placeholder="Start typing here..."></textarea>
+
+    <div class="result" id="resultDisplay"></div>
+
+    <button id="startBtn">Start Test</button>
+  </div>
+
+  <script>
+    const quotes = [
+  "The quick brown fox jumps over the lazy dog.",
+  "Practice makes perfect.",
+  "JavaScript is fun once you get the hang of it.",
+  "Typing speed improves with consistent effort.",
+  "Stay focused and keep learning every day."
+];
+
+let startTime;
+let timerRunning = false;
+
+const quoteDisplay = document.getElementById("quoteDisplay");
+const typedInput = document.getElementById("typedInput");
+const resultDisplay = document.getElementById("resultDisplay");
+const startBtn = document.getElementById("startBtn");
+
+function getRandomQuote() {
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  return quotes[randomIndex];
+}
+
+function startTest() {
+  const quote = getRandomQuote();
+  quoteDisplay.textContent = quote;
+  typedInput.value = "";
+  resultDisplay.textContent = "";
+  startTime = new Date().getTime();
+  timerRunning = true;
+  typedInput.disabled = false;
+  typedInput.focus();
+}
+
+function endTest() {
+  const endTime = new Date().getTime();
+  const totalTime = (endTime - startTime) / 1000; // in seconds
+  const typedText = typedInput.value.trim();
+  const wordCount = typedText.split(/\s+/).length;
+  const speed = Math.round((wordCount / totalTime) * 60); // WPM
+
+  const originalText = quoteDisplay.textContent.trim();
+
+  if (typedText === originalText) {
+    resultDisplay.textContent = `✅ Great! You typed in ${totalTime.toFixed(2)}s — Speed: ${speed} WPM`;
+  } else {
+    resultDisplay.textContent = `❌ Oops! Text does not match. Try again.`;
+  }
+
+  timerRunning = false;
+  typedInput.disabled = true;
+}
+
+typedInput.addEventListener("input", () => {
+  if (!timerRunning) return;
+
+  const originalText = quoteDisplay.textContent.trim();
+  const typedText = typedInput.value.trim();
+
+  if (typedText === originalText) {
+    endTest();
+  }
+});
+
+startBtn.addEventListener("click", startTest);
+
+  </script>
+</body>
+</html>

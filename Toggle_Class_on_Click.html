@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .highlight {
+  background-color: rgb(230, 173, 187);
+}
+
+    </style>
+</head>
+<body>
+    <ul>
+        <li class="clickable">Click me 1</li>
+        <li class="clickable">Click me 2</li>
+      </ul>
+      <script>
+        const items = document.querySelectorAll('.clickable');
+items.forEach(item => {
+  item.addEventListener('click', function() {
+    this.classList.toggle('highlight');
+  });
+});
+
+      </script>
+      
+</body>
+</html>

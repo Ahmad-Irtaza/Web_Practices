@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>click count</title>
+
+
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin-right: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+        button:active {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Click Count: <span id="count">0</span></h1>
+    <button id="clickBtn">Click me</button>
+    <script>
+       
+       let count = 0;
+        const countSpan = document.getElementById('count');
+        const button = document.getElementById('clickBtn');
+
+        
+        button.addEventListener('click',() =>{
+            count++;
+            countSpan.textContent = count;
+        })
+    </script>
+</body>
+</html>

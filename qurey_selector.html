@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <li class="food">Pizza</li>
+        <li class="food">Burger</li>
+        <li class="food">Pasta</li>
+      </ul>
+      <button onclick="highlightFirst()">Highlight First</button>
+     <script>
+     function highlightFirst() {
+        const firstItem = document.querySelectorAll('.food');
+        // firstItem.style.backgroundColor = 'yellow';
+        for (let i = 0; i < firstItem.length; i++) {
+            firstItem[i].style.color = 'red';
+        }
+      }
+      </script> 
+</body>
+</html>
